@@ -8,6 +8,8 @@ import HomePage from './components/HomePage'
 import Dashboards from './components/Admin/Dashboards'
 import AdminDashboard from './components/Admin/AdminDashboard'
 import Department from './components/Admin/Department'
+import VisiorDAshboard from './components/SuperVisior/VisiorDAshboard'
+import Citizendash from './components/Citizen/Citizendash'
 
 
 
@@ -25,6 +27,10 @@ export default function App() {
         <Route path='/admin-dash' element={<AdminDashboard />} />
         <Route path='/project' element={<Dashboards />} />
         <Route path='/dept' element={<Department />} />
+        {/* SuperVisior */}
+        <Route path='/visior' element={<VisiorDAshboard />} />
+        {/* Citizen Router */}
+        <Route path='/citizen' element={<Citizendash /> } />
       </Routes>
     </div>
   )

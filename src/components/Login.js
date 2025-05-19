@@ -35,8 +35,11 @@ export default function Login() {
                     setAuth(data.user); // ✅ set the user in context
                     if (data.user.role === 'admin') {
                         navigate('/admin-dash');
-                    } else {
-                        navigate('/user-dash');
+                    } else if (data.user.role === 'supervisior') {
+                        navigate('/visior');
+                    }
+                    else {
+                        navigate('/citizen')
                     }
                 }
             })
@@ -48,7 +51,7 @@ export default function Login() {
     return (
         <div className="min-h-screen bg-blue-50 flex flex-col justify-center items-center px-4">
             <h1 className="text-2xl md:text-3xl font-bold text-blue-900 mb-6 text-center">
-                AI-Driven Centralized Dashboard for Real-Time Monitoring and Governance in District Administration
+                Driven Centralized Dashboard for Real-Time Monitoring and Governance in District Administration
             </h1>
 
             <div className="bg-white p-8 rounded shadow-md w-full max-w-md">

@@ -42,12 +42,17 @@ export default function AdminDashboard() {
 
     const navigate = useNavigate()
 
-    // Edit application
-    const [status, setStatus] = useState('')
-
+    // Edit  notification
+    const [statusMap, setStatusMap] = useState({});
 
     const View = (id) => {
-        console.log(id)
+        const notifyStatus = statusMap[id]; // Get status of the specific notification
+
+        if (!notifyStatus) {
+            alert("Please select a status before updating.");
+            return;
+        }
+
         fetch(`${url}/upadte-notification/${id}`, {
             method: 'POST',
             headers: {
@@ -55,23 +60,21 @@ export default function AdminDashboard() {
                 "Accept": "application/json"
             },
             credentials: 'include',
-            body: JSON.stringify({
-                status: status
-            })
+            body: JSON.stringify({ status: notifyStatus })
         })
             .then(res => res.json())
             .then(data => {
                 if (data.success === true) {
-                    alert(data.message)
+                    alert(data.message);
                 } else {
-                    alert(data.message)
+                    alert(data.message);
                 }
             })
             .catch(err => {
-                console.log("Error : ", err)
-                alert("Trouble in connecting to the Server !!!")
-            })
-    }
+                console.log("Error:", err);
+                alert("Trouble in connecting to the Server!");
+            });
+    };
 
     console.log("Views", viewNotify)
 
@@ -93,7 +96,7 @@ export default function AdminDashboard() {
 
         const payload = {
             ...formData,
-            role: 'citizen'
+            role: 'supervisior'
         }
 
         try {
@@ -147,7 +150,7 @@ export default function AdminDashboard() {
                                 {viewNotify && viewNotify.length > 0 ? (
                                     viewNotify.map((notifi, index) => (
                                         <div
-                                            key={index}
+                                            key={notifi.notify_id}
                                             className="bg-white border border-gray-200 rounded-lg shadow mb-3 w-full"
                                             role="alert"
                                         >
@@ -174,23 +177,24 @@ export default function AdminDashboard() {
                                                 <label>
                                                     <input
                                                         type="radio"
-                                                        name={`status-${notifi.id}`}
+                                                        name={`status-${notifi.notify_id}`}
                                                         value="ongoing"
-                                                        checked={status === 'ongoing'}
-                                                        onChange={(e) => setStatus(e.target.value)}
-                                                    />
-                                                    Ongoing
+                                                        checked={statusMap[notifi.notify_id] === 'ongoing'}
+                                                        onChange={(e) =>
+                                                            setStatusMap(prev => ({ ...prev, [notifi.notify_id]: e.target.value }))
+                                                        }
+                                                    /> Ongoing
                                                 </label>
                                                 <label>
                                                     <input
                                                         type="radio"
-                                                        name={`status-${notifi.id}`}
+                                                        name={`status-${notifi.notify_id}`}
                                                         value="completed"
-                                                        checked={status === 'completed'}
-                                                        onChange={(e) => setStatus(e.target.value)}
-                                                    />
-                                                    Completed
-                                                </label>
+                                                        checked={statusMap[notifi.notify_id] === 'completed'}
+                                                        onChange={(e) =>
+                                                            setStatusMap(prev => ({ ...prev, [notifi.notify_id]: e.target.value }))
+                                                        }
+                                                    />Completed</label>
                                             </div>
                                             <button
                                                 onClick={() => View(notifi.notify_id)}
@@ -215,7 +219,7 @@ export default function AdminDashboard() {
                                 className="bg-sky-500 hover:bg-sky-600 text-white font-medium px-4 py-2 rounded"
                                 onClick={() => setCreate(true)}
                             >
-                                Create Citizen
+                                Create SuperVisior
                             </button>
                         </div>
 

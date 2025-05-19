@@ -12,6 +12,22 @@ export default function Header() {
     };
 
     const navigate = useNavigate()
+    const url = process.env.REACT_APP_URL
+    const Logout = () => {
+        fetch(`${url}/logout`, {
+            method: "DELETE",
+            credentials: "include"
+        })
+            .then(res => res.json())
+            .then(data => {
+                window.location.href = '/login'
+                console.log(data)
+            })
+            .catch(err => {
+                console.log("Error :", err)
+                alert("Trouble in connecting to Server")
+            })
+    }
 
     return (
         <header className="bg-blue-900 text-white shadow-md sticky top-0 z-50">
@@ -23,8 +39,8 @@ export default function Header() {
 
                 {/* Desktop Buttons */}
                 <div className="hidden md:flex items-center gap-4">
-                    <button className="bg-white text-blue-900 px-4 py-2 rounded hover:bg-blue-200 transition">Login</button>
-                    <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition">Logout</button>
+                    <button className="bg-white text-blue-900 px-4 py-2 rounded hover:bg-blue-200 transition" onClick={() => navigate('/login')}>Login</button>
+                    <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition" onClick={Logout}>Logout</button>
                 </div>
 
                 {/* Mobile Hamburger */}
@@ -37,7 +53,7 @@ export default function Header() {
             {menuOpen && (
                 <div className="md:hidden px-4 pb-4 flex flex-col gap-2 bg-blue-800">
                     <button className="bg-white text-blue-900 px-4 py-2 rounded hover:bg-blue-200 transition" onClick={() => navigate('/login')}>Login</button>
-                    <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition">Logout</button>
+                    <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition" onClick={Logout}>Logout</button>
                 </div>
             )}
         </header>
