@@ -8,6 +8,8 @@ function Provider(props) {
     const [User, setUser] = useState(null)
     const [users, setUsers] = useState(null)
 
+    console.log("User", Auth)
+
  useEffect(() => {
 
         if (apiurl) {

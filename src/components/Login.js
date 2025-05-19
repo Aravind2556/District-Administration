@@ -4,8 +4,9 @@ import { DContext } from './Provider';
 import { Flag } from 'lucide-react';
 
 export default function Login() {
-    const { setAuth ,Auth}=createContext(DContext)
+    const { Auth ,setAuth ,User}=createContext(DContext)
     console.log("Auth",Auth)
+    console.log("User", User)
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -23,8 +24,8 @@ export default function Login() {
 
       
             fetch(`${apiurl}/login`, {
-                credentials:'include',
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -33,12 +34,12 @@ export default function Login() {
             })
             .then(res=>res.json())
             .then(data=>{
-                if(data.success){
-                    setAuth(true)
-                    alert(data.message)
+                alert(data.message)
+                if(data.success === true){
+                   console.log("Data",data)
                 }
                 else{
-                    setAuth(false)
+                    
                 }
             })
             .catch(err=>{
