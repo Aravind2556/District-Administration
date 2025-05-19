@@ -10,7 +10,7 @@ export default function Register() {
     });
 
     const navigate = useNavigate();
-    const apiurl = 'http://localhost:5000'; // or your deployed backend URL
+    const apiurl = process.env.REACT_APP_URL; // or your deployed backend URL
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,13 +21,12 @@ export default function Register() {
 
         const payload = {
             ...formData,
-            role: 'admin' // default role
-        };
+        }
 
         try {
             const res = await fetch(`${apiurl}/register`, {
                 method: 'POST',
-                credentials:'include',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -51,7 +50,7 @@ export default function Register() {
     return (
         <div className="min-h-screen bg-blue-50 flex flex-col justify-center items-center px-4">
             <h1 className="text-2xl md:text-3xl font-bold text-blue-900 mb-6 text-center">
-                AI-Driven Centralized Dashboard for Real-Time Monitoring and Governance in District Administration
+                Driven Centralized Dashboard for Real-Time Monitoring and Governance in District Administration
             </h1>
 
             <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
@@ -100,6 +99,21 @@ export default function Register() {
                             required
                             className="w-full mt-1 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Role</label>
+                        <div className="mb-4 ">
+
+                            <select name='role' className='w-full border border-gray-300 rounded px-3 py-2 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500' aria-label="select status" value={formData.role}
+                            >
+                                <option value=""> Select Roles</option>
+                                <option value="admin">Super Admin</option>
+                                <option value="citizen">Citizen</option>
+
+                            </select>
+                        </div>
+
                     </div>
                     <button type="submit" className="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800 transition">
                         Register

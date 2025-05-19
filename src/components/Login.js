@@ -1,19 +1,17 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { DContext } from './Provider';
 import { Flag } from 'lucide-react';
 
 export default function Login() {
-    const { Auth ,setAuth ,User}=createContext(DContext)
-    console.log("Auth",Auth)
-    console.log("User", User)
+    const { setAuth } = useContext(DContext); // ✅ Correct usage
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
 
     const navigate = useNavigate();
-    const apiurl = 'http://localhost:5000'; // Update to your backend URL
+    const apiurl = process.env.REACT_APP_URL; // Fix key name if needed
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,29 +20,29 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-      
-            fetch(`${apiurl}/login`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData),
-               
-            })
-            .then(res=>res.json())
-            .then(data=>{
+        fetch(`${apiurl}/login`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData),
+        })
+            .then(res => res.json())
+            .then(data => {
                 alert(data.message)
-                if(data.success === true){
-                   console.log("Data",data)
-                }
-                else{
-                    
+                if (data.success === true) {
+                    setAuth(data.user); // ✅ set the user in context
+                    if (data.user.role === 'admin') {
+                        navigate('/admin-dash');
+                    } else {
+                        navigate('/user-dash');
+                    }
                 }
             })
-            .catch(err=>{
-                console.log("error in fetch user login",err)
-            })
+            .catch(err => {
+                console.log("error in fetch user login", err);
+            });
     };
 
     return (
@@ -83,7 +81,7 @@ export default function Login() {
                     </button>
                 </form>
                 <p className="mt-4 text-sm text-center text-gray-600">
-                    Don't have an account? <Link to="/register" className="text-blue-600 hover:underline">Register</Link>
+                    Don't have an account? <Link to="/regsiter" className="text-blue-600 hover:underline">Register</Link>
                 </p>
             </div>
         </div>

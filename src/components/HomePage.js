@@ -1,7 +1,9 @@
 import React from 'react';
 import { Brain, ShoppingCart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
+    const navigate = useNavigate()
     return (
         <div className="bg-blue-50 text-gray-800">
 
@@ -14,7 +16,7 @@ export default function HomePage() {
                     Real-Time Monitoring and Governance in District Administration
                 </p>
                 <div className="flex gap-4">
-                    <button className="bg-white text-blue-700 px-6 py-2 rounded font-medium hover:bg-gray-100 transition">
+                    <button className="bg-white text-blue-700 px-6 py-2 rounded font-medium hover:bg-gray-100 transition" onClick={() => navigate('/login')}>
                         <Brain size={18} className="inline mr-1" /> Get Started
                     </button>
                     <button className="bg-white text-blue-700 px-6 py-2 rounded font-medium hover:bg-gray-100 transition">

@@ -5,31 +5,15 @@ function Provider(props) {
     const apiurl = process.env.REACT_APP_API_URL;
 
     const [Auth, setAuth] = useState(null)
-    const [User, setUser] = useState(null)
-    const [users, setUsers] = useState(null)
+   
+
 
     console.log("User", Auth)
 
- useEffect(() => {
+    useEffect(() => {
 
         if (apiurl) {
 
-            fetch(`${apiurl}/fetch-users`, {
-                method: "GET",
-                credentials: 'include'
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success === true) {
-                        setUsers(data.users)
-                    }
-                    else {
-                        alert(data.message)
-                    }
-                })
-                .catch(err => {
-                    console.log("error fetching in checkauth", err)
-                })
 
             fetch(`${apiurl}/checkauth`, {
                 method: "GET",
@@ -49,32 +33,14 @@ function Provider(props) {
                     console.log("error fetching in checkauth", err)
                 })
 
-            fetch(`${apiurl}/fetch-user`, {
-                method: "GET",
-                credentials: 'include'
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success === true) {
-                        setUser(data.user)
-
-
-                    }
-                    else {
-                        console.log(data.messsage)
-                    }
-                })
-                .catch(err => {
-                    console.log("error fetching to username", err)
-                })
-            }
+        }
 
     }, [apiurl])
 
 
 
 
-    const data = { Auth, setAuth, User, users, apiurl }
+    const data = { Auth, setAuth, apiurl }
     return (
 
 

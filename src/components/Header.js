@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react'; // Optional: Lucide icons for hamburger
+import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const handleToggle = () => {
         setMenuOpen(!menuOpen);
+
+
     };
+
+    const navigate = useNavigate()
 
     return (
         <header className="bg-blue-900 text-white shadow-md sticky top-0 z-50">
@@ -31,7 +36,7 @@ export default function Header() {
             {/* Mobile Menu */}
             {menuOpen && (
                 <div className="md:hidden px-4 pb-4 flex flex-col gap-2 bg-blue-800">
-                    <button className="bg-white text-blue-900 px-4 py-2 rounded hover:bg-blue-200 transition">Login</button>
+                    <button className="bg-white text-blue-900 px-4 py-2 rounded hover:bg-blue-200 transition" onClick={() => navigate('/login')}>Login</button>
                     <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition">Logout</button>
                 </div>
             )}
