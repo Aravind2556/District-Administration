@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Brain, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
     const navigate = useNavigate()
+    const apiurl = process.env.REACT_APP_URL
+
+    // Project Display
+    const [project, setProject] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch(`${apiurl}/project`, { method: "GET", credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success === true) {
+                    setProject(data.project);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(err => console.log("Fetch error:", err))
+            .finally(() => setLoading(false));
+    }, []);
     return (
         <div className="bg-blue-50 text-gray-800">
 
@@ -26,49 +45,55 @@ export default function HomePage() {
             </section>
 
             {/* About Section */}
-            <section className="py-16 px-6 bg-white">
-                <div className="max-w-5xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold text-blue-900 mb-4">About the Project</h2>
-                    <p className="text-lg text-gray-700">
-                        This platform is built to monitor district administration performance in real-time.
-                        It centralizes data collection, visualizes trends, and enables quick decisions for better governance.
-                        Designed for district officers and administrators, this tool increases efficiency, transparency, and responsiveness.
-                    </p>
-                </div>
-            </section>
+
 
             {/* Services Section */}
             <section className="py-16 px-6 bg-blue-100">
+                <section className="py-16 px-6 ">
+                    <div className="max-w-5xl mx-auto text-center">
+                        <h2 className="text-3xl font-bold text-blue-900 mb-4">About the Project</h2>
+                        <p className="text-lg text-gray-700">
+                            This platform is built to monitor district administration performance in real-time.
+                            It centralizes data collection, visualizes trends, and enables quick decisions for better governance.
+                            Designed for district officers and administrators, this tool increases efficiency, transparency, and responsiveness.
+                        </p>
+                    </div>
+                </section>
+
                 <div className="max-w-6xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold text-blue-900 mb-10">Our Core Services</h2>
+                    <h2 className="text-3xl font-bold text-blue-900 mb-10">Our Projects</h2>
                     <div className="grid md:grid-cols-3 gap-8 text-left">
-                        {[
-                            { title: 'Real-Time Monitoring', desc: 'Track district performance, data and metrics instantly.' },
-                            { title: 'Smart  Alerts', desc: 'Automatic alerts for delays, issues or irregularities using ML.' },
-                            { title: 'Citizen Service Stats', desc: 'Live stats of grievance redressal, welfare distribution, etc.' },
-                            { title: 'Interactive Dashboards', desc: 'Beautiful dashboards for taluk, panchayat, or district level.' },
-                            { title: 'Centralized Reports', desc: 'Generate automatic reports for monthly review meetings.' },
-                            { title: 'Custom Access Control', desc: 'Different roles (Admin, SuperVisior, Citizen) with proper rights.' },
-                        ].map((item, index) => (
-                            <div key={index} className="bg-white p-6 rounded shadow-md hover:shadow-lg transition">
-                                <h3 className="text-xl font-semibold text-blue-800 mb-2">{item.title}</h3>
-                                <p className="text-gray-600">{item.desc}</p>
-                            </div>
-                        ))}
+                        {loading ? (
+                            <p>Loading...</p>
+                        ) : (
+                            Array.isArray(project) && project.map(item => (
+                                <div
+                                    key={item._id}
+                                    onClick={() => window.location.href = "/login"}
+                                    className="bg-white shadow-md p-4 rounded-lg cursor-pointer hover:shadow-lg transition duration-300 w-full max-w-md mx-auto mb-4"
+                                >
+                                    <h2 className="text-xl font-bold text-gray-800 mb-1">{item.name}</h2>
+                                    <p className="text-sm text-gray-500 mb-3">{item.departmentID.deptname}</p>
+
+                                    {/* Progress Bar */}
+                                    <div className="w-full bg-gray-200 rounded-full h-4">
+                                        <div
+                                            className="bg-blue-500 h-4 rounded-full"
+                                            style={{ width: `${item.progress}%` }}
+                                        ></div>
+                                    </div>
+
+                                    <p className="text-sm text-right text-gray-600 mt-1">{item.progress}%</p>
+                                </div>
+
+                            ))
+                        )}
+
                     </div>
                 </div>
             </section>
 
-            {/* Why AI Section */}
-           
 
-            {/* Cart Placeholder Section */}
-            <section className="py-16 px-6 bg-blue-100">
-                <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold text-blue-900 mb-4">Your Cart</h2>
-                    <p className="text-gray-600">Cart functionality will be integrated soon. Check back later!</p>
-                </div>
-            </section>
 
             {/* Footer / Contact Section */}
             <footer className="bg-blue-900 text-white py-8">
