@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Menu, X } from 'lucide-react'; // Optional: Lucide icons for hamburger
 import { useNavigate } from 'react-router-dom';
+import { DContext } from './Provider';
+import Login from './Login';
 
 export default function Header() {
+    const { Auth } = useContext(DContext)
     const [menuOpen, setMenuOpen] = useState(false);
 
     const handleToggle = () => {
@@ -20,7 +23,7 @@ export default function Header() {
         })
             .then(res => res.json())
             .then(data => {
-                window.location.href = '/login'
+                window.location.href = '/'
                 console.log(data)
             })
             .catch(err => {
@@ -28,6 +31,14 @@ export default function Header() {
                 alert("Trouble in connecting to Server")
             })
     }
+    const [isAuth, setAuth] = useState(false)
+    const handleClick = () => {
+
+        window.location.href='/login'
+ 
+    };
+
+
 
     return (
         <header className="bg-blue-900 text-white shadow-md sticky top-0 z-50">
@@ -39,8 +50,20 @@ export default function Header() {
 
                 {/* Desktop Buttons */}
                 <div className="hidden md:flex items-center gap-4">
-                    <button className="bg-white text-blue-900 px-4 py-2 rounded hover:bg-blue-200 transition" onClick={() => navigate('/login')}>Login</button>
-                    <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition" onClick={Logout}>Logout</button>
+
+                    {
+                        Auth ? (
+
+                            <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition" onClick={Logout}>Logout</button>
+                        ) : (
+                                <button className="bg-white text-blue-900 px-4 py-2 rounded hover:bg-blue-200 transition" onClick={handleClick}>Login</button>
+                        )
+                            
+                        
+                    }
+
+                    
+
                 </div>
 
                 {/* Mobile Hamburger */}
@@ -52,8 +75,15 @@ export default function Header() {
             {/* Mobile Menu */}
             {menuOpen && (
                 <div className="md:hidden px-4 pb-4 flex flex-col gap-2 bg-blue-800">
-                    <button className="bg-white text-blue-900 px-4 py-2 rounded hover:bg-blue-200 transition" onClick={() => navigate('/login')}>Login</button>
-                    <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition" onClick={Logout}>Logout</button>
+
+                    {
+                        Auth ? (
+
+                            <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition" onClick={Logout}>Logout</button>
+                        ) : (
+                            <button className="bg-white text-blue-900 px-4 py-2 rounded hover:bg-blue-200 transition" onClick={handleClick}>Login</button>
+                        )
+                    }
                 </div>
             )}
         </header>

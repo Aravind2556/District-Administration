@@ -37,7 +37,7 @@ export default function Register() {
 
             if (res.ok) {
                 alert('Admin registered successfully!');
-                navigate('/login');
+                navigate('/');
             } else {
                 alert(data.message || 'Registration failed');
             }
@@ -119,9 +119,7 @@ export default function Register() {
                         Register
                     </button>
                 </form>
-                <p className="mt-4 text-sm text-center text-gray-600">
-                    Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
-                </p>
+
             </div>
         </div>
     );

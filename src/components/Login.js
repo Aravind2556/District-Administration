@@ -32,15 +32,8 @@ export default function Login() {
             .then(data => {
                 alert(data.message)
                 if (data.success === true) {
-                    setAuth(data.user); // ✅ set the user in context
-                    if (data.user.role === 'admin') {
-                        navigate('/admin-dash');
-                    } else if (data.user.role === 'supervisior') {
-                        navigate('/visior');
-                    }
-                    else {
-                        navigate('/citizen')
-                    }
+                    setAuth(data.user);
+                    window.location.href ='/'
                 }
             })
             .catch(err => {

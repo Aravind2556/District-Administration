@@ -2,13 +2,13 @@ import React, { createContext, useEffect, useState } from 'react'
 
 export const DContext = createContext()
 function Provider(props) {
-    const apiurl = process.env.REACT_APP_API_URL;
+    const apiurl = process.env.REACT_APP_URL;
 
     const [Auth, setAuth] = useState(null)
-   
 
 
-    console.log("User", Auth)
+
+
 
     useEffect(() => {
 

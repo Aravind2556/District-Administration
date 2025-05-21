@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Header from './components/Header'
 import { Route, Routes } from 'react-router-dom'
 
@@ -10,19 +10,34 @@ import AdminDashboard from './components/Admin/AdminDashboard'
 import Department from './components/Admin/Department'
 import VisiorDAshboard from './components/SuperVisior/VisiorDAshboard'
 import Citizendash from './components/Citizen/Citizendash'
+import { DContext } from './components/Provider'
+import LoadingPage from './components/Loading'
 
 
 
 
 export default function App() {
-  const [isauth, setAuth] = useState(false)
+  const { Auth } = useContext(DContext)
+
+  console.log("cnsol", Auth)
+
+
+
+  // if (!Auth) {
+  //   return <div><LoadingPage /></div>
+  // }
+
   return (
     <div>
       <Header />
       <Routes>
-        <Route path='/' element={<HomePage />}></Route>
+        <Route path='/' element={Auth ? (Auth.role === 'citizen' ? <Citizendash /> : Auth.role === 'admin' ? <AdminDashboard /> : Auth?.role === 'supervisior' ? <VisiorDAshboard /> : <HomePage />) : <HomePage/>} />
+
+
+
         <Route path='/login' element={<Login />}></Route>
         <Route path='/regsiter' element={<Register />}></Route>
+
         {/* Admin */}
         <Route path='/admin-dash' element={<AdminDashboard />} />
         <Route path='/project' element={<Dashboards />} />
@@ -30,7 +45,7 @@ export default function App() {
         {/* SuperVisior */}
         <Route path='/visior' element={<VisiorDAshboard />} />
         {/* Citizen Router */}
-        <Route path='/citizen' element={<Citizendash /> } />
+        <Route path='/citizen' element={<Citizendash />} />
       </Routes>
     </div>
   )

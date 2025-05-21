@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Brain, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { DContext } from './Provider';
+import Login from './Login';
 
 export default function HomePage() {
     const navigate = useNavigate()
     const apiurl = process.env.REACT_APP_URL
+    const { Auth } = useContext(DContext)
 
     // Project Display
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         fetch(`${apiurl}/project`, { method: "GET", credentials: 'include' })
@@ -23,6 +27,15 @@ export default function HomePage() {
             .catch(err => console.log("Fetch error:", err))
             .finally(() => setLoading(false));
     }, []);
+
+    const [isAuth, setAuth] = useState(false)
+    const handleClick = () => {
+        if (!Auth) {
+            setAuth(true)
+        }
+    };
+
+
     return (
         <div className="bg-blue-50 text-gray-800">
 
@@ -35,7 +48,7 @@ export default function HomePage() {
                     Real-Time Monitoring and Governance in District Administration
                 </p>
                 <div className="flex gap-4">
-                    <button className="bg-white text-blue-700 px-6 py-2 rounded font-medium hover:bg-gray-100 transition" onClick={() => navigate('/login')}>
+                    <button className="bg-white text-blue-700 px-6 py-2 rounded font-medium hover:bg-gray-100 transition" >
                         <Brain size={18} className="inline mr-1" /> Get Started
                     </button>
                     <button className="bg-white text-blue-700 px-6 py-2 rounded font-medium hover:bg-gray-100 transition">
@@ -69,7 +82,7 @@ export default function HomePage() {
                             Array.isArray(project) && project.map(item => (
                                 <div
                                     key={item._id}
-                                    onClick={() => window.location.href = "/login"}
+                                    onClick={handleClick}
                                     className="bg-white shadow-md p-4 rounded-lg cursor-pointer hover:shadow-lg transition duration-300 w-full max-w-md mx-auto mb-4"
                                 >
                                     <h2 className="text-xl font-bold text-gray-800 mb-1">{item.name}</h2>
