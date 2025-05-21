@@ -6,7 +6,8 @@ export default function Register() {
         fullname: '',
         email: '',
         contact: '',
-        password: ''
+        password: '',
+        role: ''
     });
 
     const navigate = useNavigate();
@@ -21,8 +22,9 @@ export default function Register() {
 
         const payload = {
             ...formData,
-        }
 
+        }
+        console.log(payload)
         try {
             const res = await fetch(`${apiurl}/register`, {
                 method: 'POST',
@@ -46,6 +48,7 @@ export default function Register() {
             alert('Something went wrong!');
         }
     };
+
 
     return (
         <div className="min-h-screen bg-blue-50 flex flex-col justify-center items-center px-4">
@@ -106,7 +109,7 @@ export default function Register() {
                         <div className="mb-4 ">
 
                             <select name='role' className='w-full border border-gray-300 rounded px-3 py-2 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500' aria-label="select status" value={formData.role}
-                            >
+                                onChange={handleChange} >
                                 <option value=""> Select Roles</option>
                                 <option value="admin">Super Admin</option>
                                 <option value="citizen">Citizen</option>
